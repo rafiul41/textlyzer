@@ -22,8 +22,6 @@ const databaseUrl = process.env.DATABASE_URL;
 if (!databaseUrl) {
   console.error('DATABASE_URL is not set');
   process.exit(1);
-} else {
-  console.log(databaseUrl);
 }
 
 // --- MongoDB Connection ---
@@ -96,6 +94,7 @@ async function saveTextController(req: Request, res: Response) {
 }
 
 // --- Route Layer ---
+// add all the routes here
 app.post('/api/text', keycloak.protect(), saveTextController);
 
 app.get('/', (req: Request, res: Response) => {
