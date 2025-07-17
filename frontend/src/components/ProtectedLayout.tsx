@@ -1,7 +1,7 @@
 // src/auth/ProtectedLayout.tsx
-import { useEffect } from "react";
-import { Outlet } from "react-router-dom";
-import { useKeycloak } from "@react-keycloak/web";
+import { useEffect } from 'react';
+import { Outlet } from 'react-router-dom';
+import { useKeycloak } from '@react-keycloak/web';
 
 const ProtectedLayout = () => {
   const { keycloak, initialized } = useKeycloak();
@@ -16,7 +16,12 @@ const ProtectedLayout = () => {
     return <div>Loading...</div>;
   }
 
-  return <Outlet />;
+  return (
+    <div>
+      Protected Layout
+      <Outlet />
+    </div>
+  );
 };
 
 export default ProtectedLayout;

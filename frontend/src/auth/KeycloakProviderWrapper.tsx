@@ -1,11 +1,11 @@
 import { ReactKeycloakProvider } from "@react-keycloak/web";
-import keycloak from "./keycloak";
+import {getKeycloakInstance} from "./keycloak";
 import type { ReactNode } from 'react';
 
 const KeycloakProviderWrapper = ({ children }: { children: ReactNode }) => {
   return (
     <ReactKeycloakProvider
-      authClient={keycloak}
+      authClient={getKeycloakInstance()}
       initOptions={{ onLoad: "login-required", checkLoginIframe: false }}
     >
       {children}
