@@ -33,7 +33,6 @@ export async function saveTextController(req: Request, res: Response) {
 
 export async function listTextsController(req: Request, res: Response) {
   try {
-    console.log('EIKHANE LIST');
     const userId = req.kauth?.grant?.access_token?.content?.sub;
     if (!userId) {
       return res.status(401).json({ error: 'User ID not found in token' });
@@ -48,7 +47,6 @@ export async function listTextsController(req: Request, res: Response) {
 
 export async function getTextController(req: Request, res: Response) {
   try {
-    console.log('EIKHANE GET');
     const { id } = req.params;
     const userId = req.kauth?.grant?.access_token?.content?.sub;
     if (!userId) {
