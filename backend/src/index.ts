@@ -2,7 +2,7 @@ import 'dotenv/config';
 import express, { Request, Response } from 'express';
 import session from 'express-session';
 import Keycloak from 'keycloak-connect';
-import { Client } from 'pg';
+import mongoose, { Schema, Document, model } from 'mongoose';
 
 declare global {
   namespace Express {
@@ -22,23 +22,41 @@ const databaseUrl = process.env.DATABASE_URL;
 if (!databaseUrl) {
   console.error('DATABASE_URL is not set');
   process.exit(1);
+} else {
+  console.log(databaseUrl);
 }
 
-const client = new Client({
-  connectionString: databaseUrl,
-});
-
-client.connect()
-  .then(() => console.log('Connected to Postgres database'))
+// --- MongoDB Connection ---
+mongoose.connect(databaseUrl)
+  .then(() => console.log('Connected to MongoDB database'))
   .catch((err: unknown) => {
-    console.error('Failed to connect to Postgres database:', err);
+    console.error('Failed to connect to MongoDB database:', err);
     process.exit(1);
   });
+
+// --- Mongoose Model ---
+interface IText extends Document {
+  content: string;
+  title: string;
+  createdAt: Date;
+  updatedAt: Date;
+  userId: string;
+}
+
+const textSchema = new Schema<IText>({
+  content: { type: String, required: true },
+  title: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
+  userId: { type: String, required: true },
+});
+
+const TextModel = model<IText>('Text', textSchema);
 
 // Session and Keycloak setup
 const memoryStore = new session.MemoryStore();
 app.use(session({
-  secret: 'your-session-secret',
+  secret: 'session-secret',
   resave: false,
   saveUninitialized: true,
   store: memoryStore,
@@ -50,19 +68,15 @@ app.use(keycloak.middleware());
 // --- Service Layer ---
 async function saveTextService({ content, title, userId }: { content: string; title: string; userId: string }) {
   const now = new Date();
-  const query = `
-    INSERT INTO text (content, title, createdAt, updatedAt, userId)
-    VALUES ($1, $2, $3, $4, $5)
-    RETURNING id, content, title, createdAt, updatedAt, userId
-  `;
-  const values = [content, title, now, now, userId];
-  const result = await client.query(query, values);
-  return result.rows[0];
+  const text = new TextModel({ content, title, createdAt: now, updatedAt: now, userId });
+  await text.save();
+  return text;
 }
 
 // --- Controller Layer ---
 async function saveTextController(req: Request, res: Response) {
   try {
+    console.log("IN THE CONTROLLER");
     const { content, title } = req.body;
     if (!content || !title) {
       return res.status(400).json({ error: 'content and title are required' });

@@ -5,20 +5,18 @@
   "scripts": {
     "dev": "nodemon --watch src --ext ts --exec ts-node src/index.ts",
     "build": "tsc",
-    "start": "node dist/index.js",
-    "migrate": "ts-node src/migrate.ts"
+    "start": "node dist/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@types/pg": "^8.15.4",
     "dotenv": "^17.2.0",
     "express": "^5.1.0",
     "express-session": "^1.18.2",
     "keycloak-connect": "^26.1.1",
-    "pg": "^8.16.3"
+    "mongoose": "^8.16.4"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",

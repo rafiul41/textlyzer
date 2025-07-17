@@ -1,0 +1,8 @@
+{
+  "realm": "textlyzer",
+  "auth-server-url": "http://localhost:8080/",
+  "ssl-required": "external",
+  "resource": "textlyzer-backend",
+  "public-client": true,
+  "confidential-port": 0
+}
