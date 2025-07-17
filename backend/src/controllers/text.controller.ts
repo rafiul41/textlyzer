@@ -1,6 +1,12 @@
 import { Request, Response } from 'express';
 import { saveTextService } from '../services/text.service';
 
+declare module 'express' {
+  interface Request {
+    kauth?: any;
+  }
+}
+
 export async function saveTextController(req: Request, res: Response) {
   try {
     const { content, title } = req.body;
