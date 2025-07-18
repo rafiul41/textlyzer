@@ -46,11 +46,61 @@ export async function getTextService(id: string, userId: string) {
 }
 
 export async function updateTextService(id: string, userId: string, data: { content?: string; title?: string }) {
-  return TextModel.findOneAndUpdate(
+  // Find the existing text
+  const existingText = await TextModel.findOne({ _id: id, userId });
+  if (!existingText) return null;
+
+  // If content is being updated, update analysis and user stats
+  let diff = null;
+  let newAnalysis = null;
+  if (data.content && data.content !== existingText.content) {
+    // Analyze old and new content
+    const oldAnalysis = analyzeText(existingText.content);
+    newAnalysis = analyzeText(data.content);
+    // Calculate difference
+    diff = {
+      numWords: newAnalysis.numWords - oldAnalysis.numWords,
+      numChars: newAnalysis.numChars - oldAnalysis.numChars,
+      numSentences: newAnalysis.numSentences - oldAnalysis.numSentences,
+      numParagraphs: newAnalysis.numParagraphs - oldAnalysis.numParagraphs
+    };
+  }
+
+  // Update the text document
+  const updated = await TextModel.findOneAndUpdate(
     { _id: id, userId },
     { ...data, updatedAt: new Date() },
     { new: true }
   );
+
+  // If content changed, update text analysis and user analysis
+  if (diff && newAnalysis) {
+    // Update text analysis
+    await TextAnalysisModel.findOneAndUpdate(
+      { textId: String(id) },
+      {
+        numWords: newAnalysis.numWords,
+        numChars: newAnalysis.numChars,
+        numSentences: newAnalysis.numSentences,
+        numParagraphs: newAnalysis.numParagraphs,
+        longestWordsPerParagraph: newAnalysis.longestWordsPerParagraph
+      }
+    );
+    // Update user analysis
+    await UserAnalysisModel.findOneAndUpdate(
+      { userId },
+      {
+        $inc: {
+          numWords: diff.numWords,
+          numChars: diff.numChars,
+          numSentences: diff.numSentences,
+          numParagraphs: diff.numParagraphs
+        }
+      }
+    );
+  }
+
+  return updated;
 }
 
 export async function deleteTextService(id: string, userId: string) {

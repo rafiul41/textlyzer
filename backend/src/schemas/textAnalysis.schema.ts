@@ -11,7 +11,7 @@ export interface ITextAnalysis extends Document {
 }
 
 export const textAnalysisSchema = new Schema<ITextAnalysis>({
-  textId: { type: String, required: true },
+  textId: { type: String, required: true, unique: true },
   numWords: { type: Number, required: true },
   numChars: { type: Number, required: true },
   numSentences: { type: Number, required: true },
