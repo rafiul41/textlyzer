@@ -1,9 +1,11 @@
-import { useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Outlet, Link } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
+import './App.css';
 
 const App = () => {
   const { keycloak, initialized } = useKeycloak();
+  const [navOpen, setNavOpen] = useState(false);
 
   useEffect(() => {
     if (initialized && !keycloak.authenticated) {
@@ -16,9 +18,39 @@ const App = () => {
   }
 
   return (
-    <div className='app-container'>
-      App container (protected layout)
-      <Outlet />
+    <div className="app-container">
+      <button className="nav-toggle" onClick={() => setNavOpen(true)}>
+        <span>&#9776;</span>
+      </button>
+      {navOpen && (
+        <div className="nav-overlay" onClick={() => setNavOpen(false)}></div>
+      )}
+      <nav className={`app-nav${navOpen ? ' nav-open' : ''}`}>
+        {navOpen && (
+          <button className="nav-close" onClick={() => setNavOpen(false)}>
+            <span>&#10005;</span>
+          </button>
+        )}
+        <Link to="/" className="nav-logo" onClick={() => setNavOpen(false)}>
+          Home
+        </Link>
+        <Link
+          to="/dashboard"
+          className="nav-logo"
+          onClick={() => setNavOpen(false)}
+        >
+          Dashboard
+        </Link>
+      </nav>
+      <button
+        className="logout-btn"
+        onClick={() => keycloak.logout({ redirectUri: window.location.origin })}
+      >
+        Logout
+      </button>
+      <main className="app-main">
+        <Outlet />
+      </main>
     </div>
   );
 };
