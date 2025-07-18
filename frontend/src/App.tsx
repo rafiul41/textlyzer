@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
+import { Toaster } from 'react-hot-toast';
 import './App.css';
 
 const App = () => {
@@ -51,6 +52,7 @@ const App = () => {
       <main className="app-main">
         <Outlet />
       </main>
+      <Toaster/>
     </div>
   );
 };
