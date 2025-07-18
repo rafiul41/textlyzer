@@ -13,7 +13,11 @@ export default function Dashboard() {
     <div className="dashboard-container">
       <h1>Welcome to Your Dashboard!</h1>
       {loading && <div>Loading user analysis...</div>}
-      {error && <div className="dashboard-error">{error}</div>}
+      {error && (
+        <div className="dashboard-error">
+          There are no analysis report for you :(
+        </div>
+      )}
       {analysis && (
         <div className="dashboard-analysis-card">
           <h2 className="dashboard-analysis-title">Your Text Analysis</h2>

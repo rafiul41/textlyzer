@@ -14,6 +14,6 @@ COPY --from=builder /app/dist ./dist
 RUN npm install --only=production
 RUN npm install -g ts-node typescript
 COPY --from=builder /app/src ./src
-RUN npm run migrate
+COPY --from=builder /app/keycloak.json ./keycloak.json
 EXPOSE 3001
 CMD ["node", "dist/index.js"] 

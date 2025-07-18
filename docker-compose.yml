@@ -2,6 +2,8 @@ version: '3.8'
 services:
   frontend:
     build: ./frontend
+    environment:
+      - VITE_API_URL=http://backend:3001/api
     ports:
       - '5173:80'
     depends_on:
@@ -54,6 +56,7 @@ services:
       - KC_DB_URL=jdbc:postgresql://postgres:5432/postgres
       - KC_DB_USERNAME=postgres
       - KC_DB_PASSWORD=postgres
+      - PROXY_ADDRESS_FORWARDING=true
     ports:
       - '8080:8080'
     depends_on:
