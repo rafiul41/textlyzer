@@ -28,7 +28,10 @@ const TextModal: React.FC<TextModalProps> = ({
   const [title, setTitle] = useState(editProps?.title || '');
   const [content, setContent] = useState(editProps?.content || '');
 
-  const { mutate, loading } = useMutation('/api/text', 'POST');
+  const { mutate, loading } = useMutation(
+    `/api/text${isAddModal ? '' : `/${editProps._id}`}`,
+    isAddModal ? 'POST' : 'PUT'
+  );
 
   const onSave = async () => {
     if (title.length > 17) {

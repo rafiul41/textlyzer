@@ -40,7 +40,7 @@ const TextList: React.FC = () => {
           }}
         />
       )}
-      {texts && texts.length !== 0 ? <h2>Here are your added texts</h2> : ''}
+      {texts && texts.length !== 0 ? <h2>Here are your texts</h2> : ''}
       <div className="list-container">
         {texts && texts.length !== 0 ? (
           texts.map((text) => (

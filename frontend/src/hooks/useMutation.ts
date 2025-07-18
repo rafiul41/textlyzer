@@ -25,7 +25,7 @@ export function useMutation<T = unknown, V = unknown>(
               ? { Authorization: `Bearer ${keycloak.token}` }
               : {})
           },
-          body: bodyToSend
+          body: body ? JSON.stringify(body) : undefined
         });
 
         if (!res.ok) throw new Error('Request failed');
