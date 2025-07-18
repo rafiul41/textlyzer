@@ -2,6 +2,8 @@ import React from 'react';
 import './TextList.css';
 import type { TextAnalysis } from '../interfaces/text';
 import { useFetch } from '../hooks/useFetch';
+import { useMutation } from '../hooks/useMutation';
+import { toast } from 'react-hot-toast';
 
 interface TextAnalysisModalProps {
   onClose: () => void;
@@ -18,7 +20,19 @@ const TextAnalysisModal: React.FC<TextAnalysisModalProps> = ({
     error
   } = useFetch<TextAnalysis>(textId ? `/api/text-analysis/${textId}` : '');
 
-  if (!open) return null;
+  const { mutate: deleteText, loading: deleting } = useMutation(`/api/text/${textId}`, 'DELETE');
+
+  const handleDelete = async () => {
+    try {
+      await deleteText();
+      toast.success('Text deleted successfully');
+      onClose();
+    } catch {
+      toast.error('Failed to delete text');
+    }
+  };
+
+  if (!textId) return null;
 
   return (
     <>
@@ -54,8 +68,11 @@ const TextAnalysisModal: React.FC<TextAnalysisModalProps> = ({
           </>
         )}
         <div className="modal-actions">
-          <button className="modal-cancel" onClick={onClose}>
+          <button className="modal-cancel" onClick={onClose} disabled={deleting}>
             Close
+          </button>
+          <button className="modal-save" onClick={handleDelete} disabled={deleting} style={{ background: '#e74c3c' }}>
+            {deleting ? 'Deleting...' : 'Delete'}
           </button>
         </div>
       </div>
