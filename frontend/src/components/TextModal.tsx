@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './TextList.css';
 import { toast } from 'react-hot-toast';
 import { useKeycloak } from '@react-keycloak/web';
+import type { TextItem } from '../interfaces/text';
 
 interface BaseModalProps {
   onClose: () => void;
@@ -14,7 +15,7 @@ interface AddModalProps extends BaseModalProps {
 
 interface EditModalProps extends BaseModalProps {
   isAddModal: false;
-  editProps: { title: string; content: string };
+  editProps: TextItem;
 }
 
 type TextModalProps = AddModalProps | EditModalProps;
@@ -30,6 +31,10 @@ const TextModal: React.FC<TextModalProps> = ({
   const [content, setContent] = useState(editProps?.content || '');
 
   const onSave = async () => {
+    if (title.length > 20) {
+      toast.error('Title cannot be more than 20 characters');
+      return;
+    }
     setLoading(true);
     try {
       const res = await fetch('/api/text', {

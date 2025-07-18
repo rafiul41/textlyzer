@@ -29,7 +29,7 @@
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: background 0.2s;
 }
 .add-text-btn:hover {
@@ -48,7 +48,7 @@
 .text-card {
   border: 1px solid #222;
   border-radius: 10px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
   width: 320px;
   height: 220px;
   margin: 0.5rem;
@@ -64,7 +64,7 @@
 }
 
 .text-card:hover {
-  box-shadow: 0 4px 24px rgba(0,0,0,0.35);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
 }
 
 .text-card-title {
@@ -109,7 +109,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   z-index: 200;
 }
 
@@ -121,7 +121,7 @@
   background: #23242a;
   color: #fff;
   border-radius: 12px;
-  box-shadow: 0 4px 32px rgba(0,0,0,0.25);
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.25);
   padding: 2rem 1.5rem 1.5rem 1.5rem;
   min-width: 320px;
   max-width: 95vw;
@@ -157,8 +157,43 @@
   background: #181a20;
   color: #fff;
   font-size: 1rem;
-  resize: vertical;
+  resize: none;
   min-height: 100px;
+}
+
+.card-icons {
+  position: absolute;
+  display: flex;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 2;
+}
+
+.view-icon,
+.edit-icon {
+  width: 24px;
+  height: 24px;
+  fill: #fff;
+  opacity: 0.8;
+  cursor: pointer;
+  transition: opacity 0.2s, fill 0.2s;
+}
+
+.view-icon {
+  margin-right: 12px;
+  margin-top: -11px;
+}
+
+.edit-icon {
+  margin-top: 6px;
+}
+
+.view-icon:hover,
+.edit-icon:hover {
+  opacity: 1;
+  fill: #4f8cff;
 }
 
 .modal-actions {
@@ -168,7 +203,8 @@
   margin-top: 1rem;
 }
 
-.modal-cancel, .modal-save {
+.modal-cancel,
+.modal-save {
   padding: 0.5rem 1.2rem;
   border-radius: 6px;
   border: none;
@@ -199,4 +235,4 @@
     width: 98vw;
     padding: 1rem 0.5rem 1rem 0.5rem;
   }
-} 
+}
