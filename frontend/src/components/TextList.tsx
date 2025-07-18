@@ -48,6 +48,7 @@ const TextList: React.FC = () => {
       <div className="top-part">
         <button className="add-text-btn">Add Text</button>
       </div>
+      {texts.length != 0 ? <h2>Here are your added texts</h2>: ''}
       <div className="list-container">
         {texts.length != 0 ? texts.map((text) => (
           <div key={text._id} className="text-card">

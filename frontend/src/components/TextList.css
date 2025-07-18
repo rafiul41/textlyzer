@@ -68,6 +68,7 @@
 .text-card-content {
   width: 100%;
   text-align: left;
+  white-space: pre-line;
   word-break: break-word;
   font-size: 1rem;
   line-height: 1.5;
