@@ -11,7 +11,7 @@ export async function saveTextService({ content, title, userId }: { content: str
   // Analyze the text and save analysis
   const analysis = analyzeText(content);
   await TextAnalysisModel.create({
-    stringHash: analysis.hash,
+    textId: String(text._id),
     numWords: analysis.numWords,
     numChars: analysis.numChars,
     numSentences: analysis.numSentences,

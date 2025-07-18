@@ -1,7 +1,7 @@
 import { Schema, Document } from 'mongoose';
 
 export interface ITextAnalysis extends Document {
-  stringHash: string;
+  textId: string; // reference to Text document
   numWords: number;
   numChars: number;
   numSentences: number;
@@ -11,7 +11,7 @@ export interface ITextAnalysis extends Document {
 }
 
 export const textAnalysisSchema = new Schema<ITextAnalysis>({
-  stringHash: { type: String, required: true, unique: true },
+  textId: { type: String, required: true },
   numWords: { type: Number, required: true },
   numChars: { type: Number, required: true },
   numSentences: { type: Number, required: true },
