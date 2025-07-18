@@ -12,25 +12,26 @@ export function analyzeText(text: string) {
   const sentences = text.match(/[^.!?]+[.!?]+(\s|$)/g) || [];
   const numSentences = sentences.length;
 
+  const wordRegex = /\b\w+\b/g;
   // Words (split by whitespace)
-  const words = text.match(/\b\w+\b/g) || [];
+  const words = text.match(wordRegex) || [];
   const numWords = words.length;
 
   // Characters (excluding whitespace)
   const numChars = text.replace(/\s/g, '').length;
 
-  // Longest word per paragraph (1D array)
+  // Longest words per paragraph (2D array)
+  console.log(paragraphs);
   const longestWordsPerParagraph = paragraphs.map(paragraph => {
-    const pWords = paragraph.match(/\b\w+\b/g) || [];
+    const pWords = paragraph.match(wordRegex) || [];
     let maxLen = 0;
-    let longest = '';
     pWords.forEach(word => {
       if (word.length > maxLen) {
         maxLen = word.length;
-        longest = word;
       }
     });
-    return longest;
+    // Collect all words with maxLen
+    return pWords.filter(word => word.length === maxLen);
   });
 
   return {

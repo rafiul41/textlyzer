@@ -1,9 +1,22 @@
 import TextModel from '../models/text.model';
+import TextAnalysisModel from '../models/textAnalysis.model';
+import { analyzeText } from '../utils/textutils';
 
 export async function saveTextService({ content, title, userId }: { content: string; title: string; userId: string }) {
   const now = new Date();
   const text = new TextModel({ content, title, createdAt: now, updatedAt: now, userId });
   await text.save();
+
+  // Analyze the text and save analysis
+  const analysis = analyzeText(content);
+  await TextAnalysisModel.create({
+    stringHash: analysis.hash,
+    numWords: analysis.numWords,
+    numChars: analysis.numChars,
+    numSentences: analysis.numSentences,
+    numParagraphs: analysis.numParagraphs,
+    longestWordsPerParagraph: analysis.longestWordsPerParagraph
+  });
   return text;
 }
 
