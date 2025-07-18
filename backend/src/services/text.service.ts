@@ -1,6 +1,7 @@
 import TextModel from '../models/text.model';
 import TextAnalysisModel from '../models/textAnalysis.model';
 import { analyzeText } from '../utils/textutils';
+import UserAnalysisModel from '../models/userAnalysis.model';
 
 export async function saveTextService({ content, title, userId }: { content: string; title: string; userId: string }) {
   const now = new Date();
@@ -17,6 +18,22 @@ export async function saveTextService({ content, title, userId }: { content: str
     numParagraphs: analysis.numParagraphs,
     longestWordsPerParagraph: analysis.longestWordsPerParagraph
   });
+
+  // Update or create user analysis
+  const update = {
+    $inc: {
+      numWords: analysis.numWords,
+      numChars: analysis.numChars,
+      numSentences: analysis.numSentences,
+      numParagraphs: analysis.numParagraphs
+    }
+  };
+  const options = { upsert: true, new: true, setDefaultsOnInsert: true };
+  await UserAnalysisModel.findOneAndUpdate(
+    { userId },
+    update,
+    options
+  );
   return text;
 }
 

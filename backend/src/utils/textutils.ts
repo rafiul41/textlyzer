@@ -21,7 +21,6 @@ export function analyzeText(text: string) {
   const numChars = text.replace(/\s/g, '').length;
 
   // Longest words per paragraph (2D array)
-  console.log(paragraphs);
   const longestWordsPerParagraph = paragraphs.map(paragraph => {
     const pWords = paragraph.match(wordRegex) || [];
     let maxLen = 0;
