@@ -15,8 +15,6 @@ export function useMutation<T = unknown, V = unknown>(
       setLoading(true);
       setError(null);
       try {
-        const bodyToSend = JSON.stringify(body);
-        console.log('BODY TO SEND', bodyToSend);
         const res = await fetch(url, {
           method,
           headers: {

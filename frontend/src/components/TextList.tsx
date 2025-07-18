@@ -3,18 +3,30 @@ import './TextList.css';
 import TextModal from './TextModal';
 import type { TextItem } from '../interfaces/text';
 import { useFetch } from '../hooks/useFetch';
+import TextAnalysisModal from './TextAnalysisModal';
 
 const TextList: React.FC = () => {
   const { data: texts, loading, error, fetchFunc } = useFetch<TextItem[]>('/api/text');
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editText, setEditText] = useState<TextItem | null>(null);
+  const [analysisTextId, setAnalysisTextId] = useState<string | null>(null);
 
-  const onModalClose = useCallback(() => {
-    setIsModalOpen(false);
+  const onEditModalClose = useCallback(() => {
+    setIsEditModalOpen(false);
     setEditText(null);
+    setAnalysisTextId(null);
     fetchFunc();
   }, [fetchFunc]);
+
+  const onViewModalClose = useCallback(() => {
+    setAnalysisTextId(null);
+    fetchFunc();
+  }, [fetchFunc]);
+
+  const onViewIconClick = useCallback((id: string) => {
+    setAnalysisTextId(id);
+  }, []);
 
   if (loading) return <div>Loading texts...</div>;
   if (error) return <div style={{ color: 'red' }}>{error}</div>;
@@ -22,16 +34,19 @@ const TextList: React.FC = () => {
   return (
     <div className="text-list-container">
       <div className="top-part">
-        <button className="add-text-btn" onClick={() => setIsModalOpen(true)}>
+        <button
+          className="add-text-btn"
+          onClick={() => setIsEditModalOpen(true)}
+        >
           Add Text
         </button>
       </div>
-      {isModalOpen && !editText && (
-        <TextModal onClose={onModalClose} isAddModal={true} />
+      {isEditModalOpen && !editText && (
+        <TextModal onClose={onEditModalClose} isAddModal={true} />
       )}
       {editText && (
         <TextModal
-          onClose={onModalClose}
+          onClose={onEditModalClose}
           isAddModal={false}
           editProps={{
             _id: editText._id,
@@ -40,13 +55,20 @@ const TextList: React.FC = () => {
           }}
         />
       )}
-      {texts && texts.length !== 0 ? <h2>Here are your texts</h2> : ''}
+      {analysisTextId && (
+        <TextAnalysisModal onClose={onViewModalClose} textId={analysisTextId} />
+      )}
+      {texts && texts.length !== 0 ? <h2>Here are your added texts</h2> : ''}
       <div className="list-container">
         {texts && texts.length !== 0 ? (
           texts.map((text) => (
             <div key={text._id} className="text-card">
               <div className="card-icons">
-                <svg className="view-icon" viewBox="0 0 24 24">
+                <svg
+                  className="view-icon"
+                  viewBox="0 0 24 24"
+                  onClick={() => onViewIconClick(text._id)}
+                >
                   <path d="M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7zm0 12c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8a3 3 0 100 6 3 3 0 000-6z" />
                 </svg>
                 <svg
