@@ -1,0 +1,34 @@
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem;
+  width: 100%;
+}
+
+.dashboard-analysis-card {
+  margin-top: 2rem;
+  background: #23242a;
+  color: #fff;
+  border-radius: 10px;
+  padding: 1.5rem;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.dashboard-analysis-title {
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  text-align: left;
+}
+
+.dashboard-error {
+  color: #ff4d4f;
+  margin-top: 1rem;
+  font-weight: 500;
+} 
