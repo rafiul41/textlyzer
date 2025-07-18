@@ -4,6 +4,7 @@ import session from 'express-session';
 import Keycloak from 'keycloak-connect';
 import mongoose from 'mongoose';
 import textRoutes from './routes/text.routes';
+import userAnalysisRoutes from './routes/userAnalysis.routes';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -39,6 +40,7 @@ app.use(keycloak.middleware());
 
 // --- Route Layer ---
 app.use('/api', textRoutes(keycloak));
+app.use('/api', userAnalysisRoutes(keycloak));
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello from Express + TypeScript!');
