@@ -8,9 +8,16 @@ export default defineConfig({
     hmr: false,
     proxy: {
       '/api': {
-        target: 'http://backend:3001',
+        target: 'http://localhost:3001', 
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
+        configure: () => {
+          // print for debugging purpose - need proxy as parameter
+          // proxy.on('proxyReq', (proxyReq, req) => {
+          //   const targetHost = proxyReq.getHeader('host');
+          //   const fullUrl = `${proxyReq.protocol || 'http:'}//${targetHost}${proxyReq.path}`;
+          //   console.log(`[VITE PROXY] ${req.method} ${req.url} → ${fullUrl}`);
+          // });
+        },
       }
     },
   },
