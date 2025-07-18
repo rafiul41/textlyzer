@@ -1,24 +1,28 @@
 .app-container {
   display: flex;
+  min-height: 100vh;
   height: 100vh;
   width: 100vw;
   position: relative;
   background: #23242a;
+  overflow: hidden;
 }
 
 .app-nav {
   width: 220px;
   min-width: 180px;
-  background: #181a20;
+  background: #4c5368;
   color: #fff;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   padding: 2rem 1rem 1rem 1.5rem;
-  box-shadow: 2px 0 12px rgba(0,0,0,0.10);
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.1);
   z-index: 2;
   transition: transform 0.3s;
   position: relative;
+  flex-shrink: 0;
+  height: 100vh;
 }
 
 .nav-logo {
@@ -31,7 +35,7 @@
 .logout-btn {
   position: absolute;
   top: 1.5rem;
-  right: 1rem;
+  right: 2rem;
   background: #e74c3c;
   color: #fff;
   border: none;
@@ -40,7 +44,7 @@
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: background 0.2s;
   z-index: 10;
 }
@@ -50,11 +54,17 @@
 
 .app-main {
   flex: 1;
-  padding: 2rem 1rem;
+  height: 100vh;
+  min-width: 0;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 0;
+}
+
+.outlet-container {
+  overflow-y: auto;
+  box-sizing: border-box;
 }
 
 .nav-toggle {
@@ -94,7 +104,7 @@
     width: 220px;
     min-width: 180px;
     padding: 2rem 1rem 1rem 1.5rem;
-    box-shadow: 2px 0 12px rgba(0,0,0,0.10);
+    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.1);
     background: #181a20;
     z-index: 100;
     transform: translateX(-100%);
@@ -117,7 +127,7 @@
     font-size: 1.5rem;
     cursor: pointer;
     z-index: 110;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -132,7 +142,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0,0,0,0.4);
+    background: rgba(0, 0, 0, 0.4);
     z-index: 99;
   }
   .nav-toggle {
@@ -150,5 +160,6 @@
   }
   .app-main {
     padding: 1rem 0.2rem;
+    height: 100vh;
   }
 }

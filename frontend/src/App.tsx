@@ -43,16 +43,20 @@ const App = () => {
           Dashboard
         </Link>
       </nav>
-      <button
-        className="logout-btn"
-        onClick={() => keycloak.logout({ redirectUri: window.location.origin })}
-      >
-        Logout
-      </button>
       <main className="app-main">
-        <Outlet />
+        <button
+          className="logout-btn"
+          onClick={() =>
+            keycloak.logout({ redirectUri: window.location.origin })
+          }
+        >
+          Logout
+        </button>
+        <div className='outlet-container'>
+          <Outlet />
+        </div>
       </main>
-      <Toaster/>
+      <Toaster />
     </div>
   );
 };
