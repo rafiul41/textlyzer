@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import './TextList.css';
 import { toast } from 'react-hot-toast';
-import { useKeycloak } from '@react-keycloak/web';
 import type { TextItem } from '../interfaces/text';
+import { useMutation } from '../hooks/useMutation';
 
 interface BaseModalProps {
   onClose: () => void;
@@ -25,36 +25,22 @@ const TextModal: React.FC<TextModalProps> = ({
   isAddModal,
   editProps
 }) => {
-  const { keycloak } = useKeycloak();
-  const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState(editProps?.title || '');
   const [content, setContent] = useState(editProps?.content || '');
 
+  const { mutate, loading } = useMutation('/api/text', 'POST');
+
   const onSave = async () => {
-    if (title.length > 20) {
-      toast.error('Title cannot be more than 20 characters');
+    if (title.length > 17) {
+      toast.error('Title cannot be more than 17 characters');
       return;
     }
-    setLoading(true);
     try {
-      const res = await fetch('/api/text', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(keycloak?.token ? { Authorization: `Bearer ${keycloak.token}` } : {}),
-        },
-        body: JSON.stringify({
-          title: title,
-          content: content
-        })
-      });
-      if (!res.ok) throw new Error('Failed to save text');
+      await mutate({ title, content });
       onClose();
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Unknown error';
       toast.error(message);
-    } finally {
-      setLoading(false);
     }
   };
 

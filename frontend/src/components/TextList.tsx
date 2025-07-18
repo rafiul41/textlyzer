@@ -1,13 +1,11 @@
 import React, { useCallback, useState } from 'react';
-// import { useKeycloak } from '@react-keycloak/web';
 import './TextList.css';
 import TextModal from './TextModal';
 import type { TextItem } from '../interfaces/text';
 import { useFetch } from '../hooks/useFetch';
 
 const TextList: React.FC = () => {
-  // const { keycloak } = useKeycloak();
-  const { data: texts, loading, error } = useFetch<TextItem[]>('/api/text');
+  const { data: texts, loading, error, fetchFunc } = useFetch<TextItem[]>('/api/text');
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editText, setEditText] = useState<TextItem | null>(null);
@@ -15,7 +13,8 @@ const TextList: React.FC = () => {
   const onModalClose = useCallback(() => {
     setIsModalOpen(false);
     setEditText(null);
-  }, []);
+    fetchFunc();
+  }, [fetchFunc]);
 
   if (loading) return <div>Loading texts...</div>;
   if (error) return <div style={{ color: 'red' }}>{error}</div>;

@@ -31,5 +31,5 @@ export function useFetch<T = unknown>(url: string) {
     fetchData();
   }, [fetchData]);
 
-  return { data, loading, error };
+  return { data, loading, error, fetchFunc: fetchData };
 }
