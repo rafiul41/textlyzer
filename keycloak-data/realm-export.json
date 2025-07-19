@@ -141,22 +141,22 @@
             "client": {
               "realm-management": [
                 "view-users",
-                "view-identity-providers",
                 "query-realms",
+                "view-identity-providers",
                 "query-users",
                 "create-client",
                 "query-clients",
                 "view-events",
                 "manage-events",
                 "view-clients",
-                "query-groups",
                 "impersonation",
+                "query-groups",
                 "manage-clients",
                 "view-realm",
                 "manage-identity-providers",
                 "view-authorization",
-                "manage-users",
                 "manage-realm",
+                "manage-users",
                 "manage-authorization"
               ]
             }
@@ -765,9 +765,9 @@
       "clientId": "textlyzer-backend",
       "name": "",
       "description": "",
-      "rootUrl": "",
+      "rootUrl": "http://localhost:5173",
       "adminUrl": "",
-      "baseUrl": "",
+      "baseUrl": "http://localhost:5173",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
@@ -793,9 +793,9 @@
       "attributes": {
         "oidc.ciba.grant.enabled": "false",
         "backchannel.logout.session.required": "true",
-        "post.logout.redirect.uris": "http://localhost:5173##http://localhost:3001",
-        "oauth2.device.authorization.grant.enabled": "false",
+        "post.logout.redirect.uris": "http://localhost:5173##http://localhost:3001##http://localhost:5173/*",
         "display.on.consent.screen": "false",
+        "oauth2.device.authorization.grant.enabled": "false",
         "backchannel.logout.revoke.offline.tokens": "false"
       },
       "authenticationFlowBindingOverrides": {},
@@ -820,15 +820,16 @@
       "clientId": "textlyzer-frontend",
       "name": "",
       "description": "",
-      "rootUrl": "",
+      "rootUrl": "http://localhost:5173",
       "adminUrl": "",
-      "baseUrl": "",
+      "baseUrl": "http://localhost:5173",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "http://localhost:5173/*"
+        "http://localhost:5173/*",
+        "http://localhost:5173"
       ],
       "webOrigins": [
         "http://localhost:5173"
@@ -847,8 +848,8 @@
         "oidc.ciba.grant.enabled": "false",
         "backchannel.logout.session.required": "true",
         "post.logout.redirect.uris": "http://localhost:5173",
-        "oauth2.device.authorization.grant.enabled": "false",
         "display.on.consent.screen": "false",
+        "oauth2.device.authorization.grant.enabled": "false",
         "backchannel.logout.revoke.offline.tokens": "false"
       },
       "authenticationFlowBindingOverrides": {},
@@ -1454,11 +1455,11 @@
         "config": {
           "allowed-protocol-mapper-types": [
             "saml-user-attribute-mapper",
+            "oidc-full-name-mapper",
+            "saml-role-list-mapper",
             "oidc-usermodel-property-mapper",
             "saml-user-property-mapper",
-            "oidc-full-name-mapper",
             "oidc-usermodel-attribute-mapper",
-            "saml-role-list-mapper",
             "oidc-sha256-pairwise-sub-mapper",
             "oidc-address-mapper"
           ]
@@ -1539,14 +1540,14 @@
         "subComponents": {},
         "config": {
           "allowed-protocol-mapper-types": [
-            "oidc-sha256-pairwise-sub-mapper",
-            "oidc-address-mapper",
-            "oidc-full-name-mapper",
             "saml-user-property-mapper",
+            "saml-user-attribute-mapper",
+            "saml-role-list-mapper",
+            "oidc-sha256-pairwise-sub-mapper",
             "oidc-usermodel-property-mapper",
             "oidc-usermodel-attribute-mapper",
-            "saml-role-list-mapper",
-            "saml-user-attribute-mapper"
+            "oidc-address-mapper",
+            "oidc-full-name-mapper"
           ]
         }
       }

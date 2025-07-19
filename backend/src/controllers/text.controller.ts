@@ -9,7 +9,9 @@ import {
 
 declare module 'express' {
   interface Request {
-    kauth?: any;
+    user?: {
+      sub: string;
+    };
   }
 }
 
@@ -19,7 +21,7 @@ export async function saveTextController(req: Request, res: Response) {
     if (!content || !title) {
       return res.status(400).json({ error: 'content and title are required' });
     }
-    const userId = req.kauth?.grant?.access_token?.content?.sub;
+    const userId = req.user?.sub;
     if (!userId) {
       return res.status(401).json({ error: 'User ID not found in token' });
     }
@@ -33,7 +35,7 @@ export async function saveTextController(req: Request, res: Response) {
 
 export async function listTextsController(req: Request, res: Response) {
   try {
-    const userId = req.kauth?.grant?.access_token?.content?.sub;
+    const userId = req.user?.sub;
     if (!userId) {
       return res.status(401).json({ error: 'User ID not found in token' });
     }
@@ -48,12 +50,11 @@ export async function listTextsController(req: Request, res: Response) {
 export async function getTextController(req: Request, res: Response) {
   try {
     const { id } = req.params;
-    const userId = req.kauth?.grant?.access_token?.content?.sub;
+    const userId = req.user?.sub;
     if (!userId) {
       return res.status(401).json({ error: 'User ID not found in token' });
     }
     const text = await getTextService(id, userId);
-    console.log(text);
     if (!text) {
       return res.status(404).json({ error: 'Text not found' });
     }
@@ -68,7 +69,7 @@ export async function updateTextController(req: Request, res: Response) {
   try {
     const { id } = req.params;
     const { content, title } = req.body;
-    const userId = req.kauth?.grant?.access_token?.content?.sub;
+    const userId = req.user?.sub;
     if (!userId) {
       return res.status(401).json({ error: 'User ID not found in token' });
     }
@@ -86,7 +87,7 @@ export async function updateTextController(req: Request, res: Response) {
 export async function deleteTextController(req: Request, res: Response) {
   try {
     const { id } = req.params;
-    const userId = req.kauth?.grant?.access_token?.content?.sub;
+    const userId = req.user?.sub;
     if (!userId) {
       return res.status(401).json({ error: 'User ID not found in token' });
     }

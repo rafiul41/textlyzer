@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { getTextAnalysisService } from '../services/textAnalysis.service';
 
 export async function getTextAnalysisController(req: Request, res: Response) {
-  const userId = req.kauth?.grant?.access_token?.content?.sub;
+  const userId = req.user?.sub;
   const { textId } = req.params;
   if (!userId) {
     return res.status(401).json({ error: 'User ID not found in token' });

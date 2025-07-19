@@ -1,10 +1,9 @@
 import { Router } from 'express';
 import { getUserAnalysisController } from '../controllers/userAnalysis.controller';
-import Keycloak from 'keycloak-connect';
+import { verifyToken } from '../middleware/verifyToken';
 
 const router = Router();
 
-export default (keycloak: Keycloak.Keycloak) => {
-  router.get('/user-analysis', keycloak.protect(), getUserAnalysisController);
-  return router;
-}; 
+router.get('/user-analysis', verifyToken, getUserAnalysisController);
+
+export default router; 

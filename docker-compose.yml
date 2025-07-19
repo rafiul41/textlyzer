@@ -58,6 +58,22 @@ services:
     networks:
       - app-network
 
+  backend:
+    build: ./backend
+    restart: always
+    ports:
+      - '3001:3001'
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/textlyzer
+      - REDIS_URL=redis://redis:6379
+      - KEYCLOAK_URL=http://keycloak:8080
+    depends_on:
+      - mongo
+      - redis
+      - keycloak
+    networks:
+      - app-network
+
 volumes:
   mongo_data:
   postgres_data:

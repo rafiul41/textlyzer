@@ -1,15 +1,32 @@
 import 'dotenv/config';
-import express, { Request, Response } from 'express';
-import session from 'express-session';
-import Keycloak from 'keycloak-connect';
+import express from 'express';
 import mongoose from 'mongoose';
 import rateLimit from 'express-rate-limit';
 import textRoutes from './routes/text.routes';
 import userAnalysisRoutes from './routes/userAnalysis.routes';
 import textAnalysisRoutes from './routes/textAnalysis.routes';
+import { createClient } from 'redis';
+import cors from 'cors';
+import { UserInfo } from './types/userinfo';
+
+// Augment Express Request type to include user
+// (keep this for type safety in controllers)
+declare global {
+  namespace Express {
+    interface Request {
+      user?: UserInfo;
+    }
+  }
+}
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+// CORS configuration
+app.use(cors({
+  origin: ['http://localhost:5173', 'http://frontend:5173'],
+  credentials: true
+}));
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -21,10 +38,11 @@ app.use(limiter);
 
 app.use(express.json());
 
-const databaseUrl = process.env.DATABASE_URL;
+// Use MONGO_URL from environment or default to Docker Compose service name
+const databaseUrl = process.env.MONGO_URL || 'mongodb://mongo:27017/textlyzer';
 
 if (!databaseUrl) {
-  console.error('DATABASE_URL is not set');
+  console.error('MONGO_URL is not set');
   process.exit(1);
 }
 
@@ -36,27 +54,27 @@ mongoose.connect(databaseUrl)
     process.exit(1);
   });
 
-// Session and Keycloak setup
-const memoryStore = new session.MemoryStore();
-app.use(session({
-  secret: 'session-secret',
-  resave: false,
-  saveUninitialized: true,
-  store: memoryStore,
-}));
-
-const keycloak = new Keycloak({ store: memoryStore });
-app.use(keycloak.middleware());
+// Redis client setup
+const redisClient = createClient({
+  url: process.env.REDIS_URL || 'redis://redis:6379'
+});
+redisClient.connect()
+  .then(() => console.log('Connected to Redis'))
+  .catch((err) => console.error('Redis connection error:', err));
 
 // --- Route Layer ---
-app.use('/api', textRoutes(keycloak));
-app.use('/api', userAnalysisRoutes(keycloak));
-app.use('/api', textAnalysisRoutes(keycloak));
+app.use('/api', textRoutes);
+app.use('/api', userAnalysisRoutes);
+app.use('/api', textAnalysisRoutes);
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello from Express + TypeScript!');
+// Health check or welcome route
+app.get('/', (req, res) => {
+  res.json({ message: 'Backend is running!' });
 });
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+// Export redisClient for use in controllers
+export { redisClient };

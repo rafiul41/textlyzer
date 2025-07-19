@@ -1,10 +1,9 @@
 import { Router } from 'express';
 import { getTextAnalysisController } from '../controllers/textAnalysis.controller';
-import Keycloak from 'keycloak-connect';
+import { verifyToken } from '../middleware/verifyToken';
 
 const router = Router();
 
-export default (keycloak: Keycloak.Keycloak) => {
-  router.get('/text-analysis/:textId', keycloak.protect(), getTextAnalysisController);
-  return router;
-}; 
+router.get('/text-analysis/:textId', verifyToken, getTextAnalysisController);
+
+export default router; 

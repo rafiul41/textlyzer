@@ -1,15 +1,9 @@
 import { Request, Response } from 'express';
 import { getUserAnalysisService } from '../services/userAnalysis.service';
-import { createClient } from 'redis';
-
-// Use localhost for Redis when running backend on host machine
-const redisClient = createClient({
-  url: 'redis://localhost:6379'
-});
-redisClient.connect().catch(console.error);
+import { redisClient } from '../index';
 
 export async function getUserAnalysisController(req: Request, res: Response) {
-  const userId = req.kauth?.grant?.access_token?.content?.sub;
+  const userId = req.user?.sub;
   if (!userId) {
     return res.status(401).json({ error: 'User ID not found in token' });
   }

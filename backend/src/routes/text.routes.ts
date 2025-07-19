@@ -6,15 +6,14 @@ import {
   updateTextController,
   deleteTextController
 } from '../controllers/text.controller';
-import Keycloak from 'keycloak-connect';
+import { verifyToken } from '../middleware/verifyToken';
 
 const router = Router();
 
-export default (keycloak: Keycloak.Keycloak) => {
-  router.post('/text', keycloak.protect(), saveTextController);
-  router.get('/text/:id', keycloak.protect(), getTextController);
-  router.get('/text', keycloak.protect(), listTextsController);
-  router.put('/text/:id', keycloak.protect(), updateTextController);
-  router.delete('/text/:id', keycloak.protect(), deleteTextController);
-  return router;
-}; 
+router.post('/text', verifyToken, saveTextController);
+router.get('/text/:id', verifyToken, getTextController);
+router.get('/text', verifyToken, listTextsController);
+router.put('/text/:id', verifyToken, updateTextController);
+router.delete('/text/:id', verifyToken, deleteTextController);
+
+export default router; 
