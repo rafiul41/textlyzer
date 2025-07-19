@@ -60,3 +60,7 @@ All services are connected via a shared Docker network and have their ports mapp
   docker compose logs backend
   ```
   N.B: Make sure you are on the parent directory (where the compose file resides) when running the above command
+
+## Authentication
+
+When you open the frontend app for the first time (http://localhost:5173), you will be redirected to the Keycloak login page. If you have not created a user yet, you need to create a new user in Keycloak to log in and use the app.
