@@ -1,5 +1,3 @@
-import crypto from 'crypto';
-
 export function analyzeText(text: string) {
   // Paragraphs (split by two or more newlines)
   const paragraphs = text.split(/\n{2,}/).map(p => p.trim()).filter(Boolean);
