@@ -8,6 +8,7 @@ import textAnalysisRoutes from './routes/textAnalysis.routes';
 import { createClient } from 'redis';
 import cors from 'cors';
 import { UserInfo } from './types/userinfo';
+import logger from './utils/logger';
 
 // Augment Express Request type to include user
 // (keep this for type safety in controllers)
@@ -42,15 +43,15 @@ app.use(express.json());
 const databaseUrl = process.env.MONGO_URL || 'mongodb://mongo:27017/textlyzer';
 
 if (!databaseUrl) {
-  console.error('MONGO_URL is not set');
+  logger.error('MONGO_URL is not set');
   process.exit(1);
 }
 
 // --- MongoDB Connection ---
 mongoose.connect(databaseUrl)
-  .then(() => console.log('Connected to MongoDB database'))
+  .then(() => logger.info('Connected to MongoDB database'))
   .catch((err: unknown) => {
-    console.error('Failed to connect to MongoDB database:', err);
+    logger.error('Failed to connect to MongoDB database: %o', err);
     process.exit(1);
   });
 
@@ -59,8 +60,8 @@ const redisClient = createClient({
   url: process.env.REDIS_URL || 'redis://redis:6379'
 });
 redisClient.connect()
-  .then(() => console.log('Connected to Redis'))
-  .catch((err) => console.error('Redis connection error:', err));
+  .then(() => logger.info('Connected to Redis'))
+  .catch((err) => logger.error('Redis connection error: %o', err));
 
 // --- Route Layer ---
 app.use('/api', textRoutes);
@@ -73,7 +74,7 @@ app.get('/', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  logger.info(`Server running on port ${PORT}`);
 });
 
 // Export redisClient for use in controllers
