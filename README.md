@@ -53,4 +53,10 @@ All services are connected via a shared Docker network and have their ports mapp
 - The first build may take a few minutes as images are downloaded and built.
 - Data for MongoDB and PostgreSQL is persisted in Docker volumes.
 
----
+## Logs
+- Logs are properly formatted using the winston library
+- To check the logs of the Node.js backend app while Docker is running, use:
+  ```sh
+  docker compose logs backend
+  ```
+  N.B: Make sure you are on the parent directory (where the compose file resides) when running the above command
