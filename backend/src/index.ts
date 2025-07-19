@@ -3,12 +3,21 @@ import express, { Request, Response } from 'express';
 import session from 'express-session';
 import Keycloak from 'keycloak-connect';
 import mongoose from 'mongoose';
+import rateLimit from 'express-rate-limit';
 import textRoutes from './routes/text.routes';
 import userAnalysisRoutes from './routes/userAnalysis.routes';
 import textAnalysisRoutes from './routes/textAnalysis.routes';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+app.use(limiter);
 
 app.use(express.json());
 

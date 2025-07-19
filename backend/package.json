@@ -16,7 +16,8 @@
     "express": "^5.1.0",
     "express-session": "^1.18.2",
     "keycloak-connect": "^26.1.1",
-    "mongoose": "^8.16.4"
+    "mongoose": "^8.16.4",
+    "express-rate-limit": "^8.0.1"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
@@ -24,6 +25,7 @@
     "@types/node": "^24.0.14",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "@types/express-rate-limit": "^6.0.2"
   }
 }
